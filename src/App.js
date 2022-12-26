@@ -1,6 +1,6 @@
-import{useState} from "react"
-import { Container, SimpleGrid, List, ThemeIcon } from "@mantine/core";
-import { IconCircleCheck, IconCircleDashed } from '@tabler/icons';
+import { useState } from "react";
+import { Container, SimpleGrid, List, ThemeIcon, Input } from "@mantine/core";
+import { IconCircleCheck, IconCircleDashed } from "@tabler/icons";
 import Card from "./components/Card";
 import "./App.css";
 
@@ -19,35 +19,41 @@ const storeItems = [
   },
 ];
 
-
 function App() {
   let [basketItems, setBasketItems] = useState([]);
+  let [searchValue, setSearchValue] = useState("");
+  let filteredItems = basketItems.filter((item) => item.name.indexOf(searchValue) >= 0);
   return (
     <Container>
       <SimpleGrid cols={3} className="Store">
-        {
-          storeItems.map(({name})=>{
-            return <Card key={name} name={name} onAdd={()=> setBasketItems([...basketItems,{name}])}/>
-          })
-        }
+        {storeItems.map(({ name }) => {
+          return (
+            <Card
+              key={name}
+              name={name}
+              onAdd={() => setBasketItems([...basketItems, { name }])}
+            />
+          );
+        })}
       </SimpleGrid>
+      <Input.Wrapper label="Search">
+        <Input onChange={(e)=>setSearchValue(e.target.value)} />
+      </Input.Wrapper>
       <List
-      className="list"
-      spacing="xs"
-      size="sm"
-      center
-      icon={
-        <ThemeIcon color="teal" size={24} radius="xl">
-          <IconCircleCheck size={16} />
-        </ThemeIcon>
-      }
-    >
-      {basketItems.map(({name}, index)=>(
-        <List.Item key={index}>{name}</List.Item>
-      ))}
-      
-     
-    </List>
+        className="list"
+        spacing="xs"
+        size="sm"
+        center
+        icon={
+          <ThemeIcon color="teal" size={24} radius="xl">
+            <IconCircleCheck size={16} />
+          </ThemeIcon>
+        }
+      >
+        {filteredItems.map(({ name }, index) => (
+          <List.Item key={index}>{name}</List.Item>
+        ))}
+      </List>
     </Container>
   );
 }
