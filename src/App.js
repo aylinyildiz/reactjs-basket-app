@@ -22,7 +22,7 @@ const storeItems = [
 function App() {
   let [basketItems, setBasketItems] = useState([]);
   let [searchValue, setSearchValue] = useState("");
-  let filteredItems = basketItems.filter((item) => item.name.indexOf(searchValue) >= 0);
+  let filteredItems = basketItems.filter((item) => item.name.toLowerCase().indexOf(searchValue.toLowerCase()) >= 0);
   return (
     <Container>
       <SimpleGrid cols={3} className="Store">
