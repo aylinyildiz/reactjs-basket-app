@@ -6,15 +6,33 @@ import "./App.css";
 
 const storeItems = [
   {
-    name: "Ball",
+    name: "Bottle",
+    src: "bottle",
     price: 150,
   },
   {
-    name: "Chocolate",
+    name: "Camera",
+    src: "camera",
     price: 200,
   },
   {
-    name: "Shampoo",
+    name: "Flower",
+    src: "flower",
+    price: 250,
+  },
+  {
+    name: "Headphone",
+    src: "headphone",
+    price: 250,
+  },
+  {
+    name: "Glasses",
+    src: "glasses",
+    price: 250,
+  },
+  {
+    name: "Watch",
+    src: "watch",
     price: 250,
   },
 ];
@@ -25,12 +43,14 @@ function App() {
   let filteredItems = basketItems.filter((item) => item.name.toLowerCase().indexOf(searchValue.toLowerCase()) >= 0);
   return (
     <Container>
+
       <SimpleGrid cols={3} className="Store">
-        {storeItems.map(({ name }) => {
+        {storeItems.map(({ name, src }) => {
           return (
             <Card
               key={name}
               name={name}
+              src={src}
               onAdd={() => setBasketItems([...basketItems, { name }])}
             />
           );
