@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Container, SimpleGrid, List, ThemeIcon, Input } from "@mantine/core";
+import { Container, SimpleGrid, List, ThemeIcon, Input, Drawer, Group, Button } from "@mantine/core";
 import { IconCircleCheck, IconCircleDashed } from "@tabler/icons";
 import Card from "./components/Card";
 import "./App.css";
@@ -38,14 +38,21 @@ const storeItems = [
 ];
 
 function App() {
+  let [opened, setOpened] = useState(false);
   let [basketItems, setBasketItems] = useState([]);
   let [searchValue, setSearchValue] = useState("");
-  let filteredItems = basketItems.filter((item) => item.name.toLowerCase().indexOf(searchValue.toLowerCase()) >= 0);
+  let filteredItems = storeItems.filter((item) => item.name.toLowerCase().indexOf(searchValue.toLowerCase()) >= 0);
   return (
     <Container>
-
+      <Group align="end">
+      <Input.Wrapper label="Search">
+        <Input onChange={(e)=>setSearchValue(e.target.value)} />
+      </Input.Wrapper>
+      <Button onClick={()=>setSearchValue("")}>Clean</Button>
+      <Button onClick={()=>setOpened(true)}>Basket</Button>
+      </Group>
       <SimpleGrid cols={3} className="Store">
-        {storeItems.map(({ name, src }) => {
+        {filteredItems.map(({ name, src }) => {
           return (
             <Card
               key={name}
@@ -56,10 +63,15 @@ function App() {
           );
         })}
       </SimpleGrid>
-      <Input.Wrapper label="Search">
-        <Input onChange={(e)=>setSearchValue(e.target.value)} />
-      </Input.Wrapper>
-      <List
+
+      <Drawer
+        opened={opened}
+        onClose={() => setOpened(false)}
+        title="My Basket"
+        padding="xl"
+        size="xl"
+      >
+        <List
         className="list"
         spacing="xs"
         size="sm"
@@ -70,10 +82,13 @@ function App() {
           </ThemeIcon>
         }
       >
-        {filteredItems.map(({ name }, index) => (
+        {basketItems.map(({ name }, index) => (
           <List.Item key={index}>{name}</List.Item>
         ))}
       </List>
+      </Drawer>
+     
+     
     </Container>
   );
 }
