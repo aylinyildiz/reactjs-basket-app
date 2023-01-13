@@ -58,6 +58,7 @@ function App() {
   let [opened, setOpened] = useState(false);
   let [basketItems, setBasketItems] = useState([]);
   let [searchValue, setSearchValue] = useState("");
+  let [itemCount, setItemCount] = useState(0);
   let filteredItems = storeItems.filter(
     (item) => item.name.toLowerCase().indexOf(searchValue.toLowerCase()) >= 0
   );
@@ -68,8 +69,10 @@ function App() {
       let _basketItems = [...basketItems];
       _basketItems[basketIndex].count += 1;
       setBasketItems(_basketItems);
+      setItemCount(itemCount+1);
     } else {
       setBasketItems([...basketItems, { id, name, count: 1 }]);
+      setItemCount(itemCount+1);
     }
   };
   return (
@@ -79,20 +82,20 @@ function App() {
           <Input onChange={(e) => setSearchValue(e.target.value)} />
         </Input.Wrapper>
         <Button onClick={() => setSearchValue("")}>Clean</Button>
-        <Indicator color="red" label={basketItems.length} size={22}>
+        <Indicator color="red" label={itemCount} size={22}>
           <Button onClick={() => setOpened(true)}>
-            <IconShoppingCart size={20} />{" "}
+            <IconShoppingCart size={20} />
           </Button>
         </Indicator>
       </Group>
       <SimpleGrid cols={3} className="Store">
-        {filteredItems.map(({ id, name, src }) => {
+        {filteredItems.map(({ id, name, src,itemCount }) => {
           return (
             <Card
               key={name}
               name={name}
               src={src}
-              onAdd={() => addToBasket({ id, name })}
+              onAdd={() => addToBasket({ id, name, itemCount })}
             />
           );
         })}
