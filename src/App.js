@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Container, SimpleGrid, List, ThemeIcon, Input, Drawer, Group, Button } from "@mantine/core";
+import { Container, SimpleGrid, List, ThemeIcon, Input, Drawer, Group, Button,Indicator } from "@mantine/core";
 import { IconCircleCheck, IconCircleDashed } from "@tabler/icons";
 import Card from "./components/Card";
 import "./App.css";
@@ -49,7 +49,10 @@ function App() {
         <Input onChange={(e)=>setSearchValue(e.target.value)} />
       </Input.Wrapper>
       <Button onClick={()=>setSearchValue("")}>Clean</Button>
+      <Indicator color="red" label={basketItems.length} size={22}>
       <Button onClick={()=>setOpened(true)}>Basket</Button>
+
+      </Indicator>
       </Group>
       <SimpleGrid cols={3} className="Store">
         {filteredItems.map(({ name, src }) => {
